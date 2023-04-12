@@ -1,10 +1,10 @@
 import bcrypt from "bcrypt";
 //salt - sal //se encripta y se concatena al password hasheado
 //naranja ->
-const saltRounds = 10; //cantidad de vueltas que de el hash 1 vuelta
+//cantidad de vueltas que de el hash 1 vuelta
 //.then   texto plano - saltRounds
 async function Encrypt(password) {
-  return await bcrypt.hash(password, saltRounds);
+  return await bcrypt.hash(password, process.env.SALT);
 }
 
 async function Compare(password, hash) {

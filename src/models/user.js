@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import jwt from "jsonwebtoken";
 
 const userScheme = new Schema({
   email: String,
@@ -28,5 +29,22 @@ const userScheme = new Schema({
     }, //almacena el id de las tareas en un array - populate
   ],
 });
+
+//override -> sobreescritura de métodos
+userScheme.set("toJSON", {
+  transform: function (doc, ret) {
+    ret.id = ret._id;
+    delete ret.passwordHash;
+    delete ret._id;
+    delete ret.tasks;
+    delete ret.__v;
+    delete ret.bloquedo;
+  },
+});
+
+userScheme.methods.generateAccesToken = function () {
+  const token = jwt.sign({ _id: this._id }, process.env.SECRET_KEY);
+  return token;
+};
 
 export default mongoose.model("User", userScheme); //todas las acciones o funciones que van a interactuar con la base

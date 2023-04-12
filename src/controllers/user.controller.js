@@ -38,7 +38,10 @@ async function AddUser(req, res) {
 async function Login(req, res) {
   try {
     const { email, password } = req.body;
-    const userLogged = await UserScheme.findOne({ email }).populate("tasks", "titulo descripcion urgente");
+    const userLogged = await UserScheme.findOne({ email }).populate(
+      "tasks",
+      "titulo descripcion urgente"
+    );
 
     if (!userLogged) return res.status(400).json(base_error_object);
 
@@ -46,9 +49,12 @@ async function Login(req, res) {
 
     if (!passwordCheck) return res.status(400).json(base_error_object);
 
+    const token = userLogged.generateAccesToken();
+
     return res.status(200).json({
       ok: true,
       user: userLogged,
+      token: token,
     });
   } catch (ex) {
     return res.status(400).json({

@@ -6,17 +6,18 @@ import {
   UpdateById,
   DeleteTask,
 } from "../controllers/task.controller";
+import { Authenticate } from "../helpers/token.helper";
 
 const router = express.Router();
 
-router.post("/tasks/add", AddTask);
+router.post("/tasks/add", Authenticate, AddTask);
 
-router.get("/tasks", GetAllTasks);
+router.get("/tasks", Authenticate, GetAllTasks);
 
-router.get("/tasks/:id", GetById);
+router.get("/tasks/:id", Authenticate, GetById);
 
-router.put("/tasks/:id", UpdateById);
+router.put("/tasks/:id", Authenticate, UpdateById);
 
-router.delete("/tasks/:id", DeleteTask);
+router.delete("/tasks/:id", Authenticate, DeleteTask);
 
 export default router;
