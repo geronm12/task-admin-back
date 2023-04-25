@@ -1,7 +1,7 @@
 import TaskScheme from "../models/task";
 import UserScheme from "../models/user";
 
-const maxPageDocs = 5;
+const maxPageDocs = 10;
 
 async function AddTask(req, res) {
   try {
@@ -38,7 +38,7 @@ async function GetAllTasks(req, res) {
       user_id: _id,
     })
       .populate("user_id")
-      .skip(page * maxPageDocs)
+      .skip((page - 1) * maxPageDocs)
       .limit(maxPageDocs);
     return res.json({
       ok: true,
